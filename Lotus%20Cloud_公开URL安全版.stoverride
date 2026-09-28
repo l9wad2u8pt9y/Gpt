@@ -1,0 +1,911 @@
+name: "Lotus Cloud · 自动更新节点策略"
+desc: |-
+  公开URL安全版：不包含机场订阅地址、不包含节点账号/密码。
+  直接套在机场原始订阅配置上；机场自身更新后，本覆写自动读取最新 proxies。
+  地区聚合与家宽聚合使用 include-all + filter 动态筛选。
+  家宽排除香港；无非港家宽时，AI 自动转到“AI · 非港最快”。
+
+
+geodata-mode: true
+
+geox-url: #!replace
+  geoip: https://geo.yuetong.app/geox/geoip.dat
+  geosite: https://geo.yuetong.app/geox/geosite.dat
+  mmdb: https://geo.yuetong.app/geox/country.mmdb
+  asn: https://geo.yuetong.app/geox/GeoLite2-ASN.mmdb
+
+geo-auto-update: false
+
+geo-update-interval: 24
+
+mixed-port: 7890
+
+allow-lan: false
+
+ipv6: true
+
+log-level: info
+
+tcp-concurrent: true
+
+unified-delay: true
+
+keep-alive-interval: 60
+
+keep-alive-idle: 300
+
+profile: #!replace
+  store-selected: true
+  store-fake-ip: true
+
+dns: #!replace
+  enable: true
+  cache-algorithm: arc
+  listen: :1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: blacklist
+  prefer-h3: false
+  respect-rules: true
+  use-hosts: true
+  use-system-hosts: true
+  ipv6: true
+  fake-ip-filter:
+  - '*.lan'
+  - '*.local'
+  - '*.arpa'
+  - localhost
+  - localhost.localdomain
+  - router.asus.com
+  - routerlogin.net
+  - captive.apple.com
+  - +.push.apple.com
+  - +.icloud.com
+  - +.apple.com
+  - msftconnecttest.com
+  - www.msftconnecttest.com
+  - +.msftncsi.com
+  - connectivitycheck.gstatic.com
+  - connectivitycheck.android.com
+  - clients3.google.com
+  - clients4.google.com
+  - android.clients.google.com
+  - time.*
+  - ntp.*
+  - +.market.xiaomi.com
+  - localhost.ptlogin2.qq.com
+  - Mijia Cloud
+  - +._dns-sd._udp.*
+  - +._services._dns-sd._udp.*
+  default-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  nameserver:
+  - https://doh.pub/dns-query
+  - https://dns.alidns.com/dns-query
+  - https://223.5.5.5/dns-query
+  - https://120.53.53.53/dns-query
+  nameserver-policy:
+    +.apple.com: https://dns.alidns.com/dns-query
+    +.icloud.com: https://dns.alidns.com/dns-query
+    +.icloud.com.cn: https://dns.alidns.com/dns-query
+    +.icloud-content.com.cn: https://dns.alidns.com/dns-query
+    +.claude.ai: https://1.1.1.1/dns-query
+    +.anthropic.com: https://1.1.1.1/dns-query
+    +.openai.com: https://1.1.1.1/dns-query
+    +.chatgpt.com: https://1.1.1.1/dns-query
+    +.cursor.com: https://1.1.1.1/dns-query
+    +.cursor.sh: https://1.1.1.1/dns-query
+    +.x.ai: https://1.1.1.1/dns-query
+    +.grok.com: https://1.1.1.1/dns-query
+    +.poe.com: https://1.1.1.1/dns-query
+    +.perplexity.ai: https://1.1.1.1/dns-query
+    +.huggingface.co: https://1.1.1.1/dns-query
+    +.cohere.com: https://1.1.1.1/dns-query
+    +.mistral.ai: https://1.1.1.1/dns-query
+    +.together.ai: https://1.1.1.1/dns-query
+    +.groq.com: https://1.1.1.1/dns-query
+    +.fireworks.ai: https://1.1.1.1/dns-query
+    +.replicate.com: https://1.1.1.1/dns-query
+    +.midjourney.com: https://1.1.1.1/dns-query
+    +.stability.ai: https://1.1.1.1/dns-query
+    +.runwayml.com: https://1.1.1.1/dns-query
+    +.copilot.microsoft.com: https://1.1.1.1/dns-query
+    +.codeium.com: https://1.1.1.1/dns-query
+    +.windsurf.com: https://1.1.1.1/dns-query
+    +.bolt.new: https://1.1.1.1/dns-query
+    +.v0.dev: https://1.1.1.1/dns-query
+    +.replit.com: https://1.1.1.1/dns-query
+    +.replit.dev: https://1.1.1.1/dns-query
+    +.vercel.ai: https://1.1.1.1/dns-query
+    +.gemini.google.com: https://1.1.1.1/dns-query
+    +.bard.google.com: https://1.1.1.1/dns-query
+    +.aistudio.google.com: https://1.1.1.1/dns-query
+    +.ai.google.dev: https://1.1.1.1/dns-query
+    +.generativelanguage.googleapis.com: https://1.1.1.1/dns-query
+    +.meta.ai: https://1.1.1.1/dns-query
+    +.sora.com: https://1.1.1.1/dns-query
+
+proxy-groups: #!replace
+- name: Lotus Cloud
+  type: select
+  proxies:
+  - Lotus · 自动选择
+  - Lotus · 故障转移
+  - 家宽聚合
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇬🇧 英国聚合
+  - Lotus · 🇩🇪 德国聚合
+  - Lotus · 🇳🇱 荷兰聚合
+  - Lotus · 🇦🇺 澳大利亚聚合
+  - Lotus · 🇨🇦 加拿大聚合
+  - Lotus · 🌏 更多地区
+  - DIRECT
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: YouTube
+  type: select
+  proxies:
+  - Lotus Cloud
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇬🇧 英国聚合
+  - Lotus · 🇩🇪 德国聚合
+  - Lotus · 🇳🇱 荷兰聚合
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: 流媒体
+  type: select
+  proxies:
+  - Lotus Cloud
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇬🇧 英国聚合
+  - Lotus · 🇩🇪 德国聚合
+  - Lotus · 🇳🇱 荷兰聚合
+  - Lotus · 🇦🇺 澳大利亚聚合
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: TikTok
+  type: select
+  proxies:
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🌏 更多地区
+  - Lotus Cloud
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: AI
+  type: fallback
+  proxies:
+  - 家宽聚合
+  - AI · 非港最快
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  lazy: true
+- name: Google
+  type: select
+  proxies:
+  - Lotus Cloud
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Telegram
+  type: select
+  proxies:
+  - Lotus Cloud
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇩🇪 德国聚合
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: 社交媒体
+  type: select
+  proxies:
+  - Lotus Cloud
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇬🇧 英国聚合
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: 游戏平台
+  type: select
+  proxies:
+  - DIRECT
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇹🇼 台湾聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇰🇷 韩国聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus Cloud
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: 兜底分流
+  type: select
+  proxies:
+  - Lotus Cloud
+  - Lotus · 🇭🇰 香港聚合
+  - Lotus · 🇺🇸 美国聚合
+  - Lotus · 🇯🇵 日本聚合
+  - Lotus · 🇸🇬 新加坡聚合
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 自动选择
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 故障转移
+  type: fallback
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  lazy: true
+- name: 家宽聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(家宽)
+  exclude-filter: (?:(?i)(剩余|流量|重置|到期|网站|官网|套餐|距离))|(?:(?i)(香港|🇭🇰|(^|[^A-Za-z])HK([^A-Za-z]|$)))
+- name: AI · 非港最快
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  exclude-filter: (?:(?i)(剩余|流量|重置|到期|网站|官网|套餐|距离))|(?:(?i)(香港|🇭🇰|(^|[^A-Za-z])HK([^A-Za-z]|$)))
+- name: Lotus · 🇭🇰 香港聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(香港|🇭🇰|(^|[^A-Za-z])HK([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇹🇼 台湾聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(台湾|台灣|🇹🇼|(^|[^A-Za-z])TW([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇯🇵 日本聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(日本|🇯🇵|(^|[^A-Za-z])JP([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇰🇷 韩国聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(韩国|韓國|🇰🇷|(^|[^A-Za-z])KR([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇸🇬 新加坡聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(新加坡|狮城|獅城|🇸🇬|(^|[^A-Za-z])SG([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇺🇸 美国聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(美国|美國|🇺🇸|(^|[^A-Za-z])US([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇬🇧 英国聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(英国|英國|🇬🇧|(^|[^A-Za-z])(UK|GB)([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇩🇪 德国聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(德国|德國|🇩🇪|(^|[^A-Za-z])DE([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇳🇱 荷兰聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(荷兰|荷蘭|🇳🇱|(^|[^A-Za-z])NL([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇦🇺 澳大利亚聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(澳大利亚|澳洲|🇦🇺|(^|[^A-Za-z])AU([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🇨🇦 加拿大聚合
+  type: url-test
+  include-all: true
+  url: http://www.gstatic.com/generate_204
+  interval: 600
+  tolerance: 50
+  lazy: true
+  filter: (?i)(加拿大|🇨🇦|(^|[^A-Za-z])CA([^A-Za-z]|$))
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+- name: Lotus · 🌏 更多地区
+  type: select
+  include-all: true
+  exclude-filter: (?i)(剩余|流量|重置|到期|网站|官网|套餐|距离)
+
+rule-providers: #!replace
+  ads:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/AdvertisingLite/AdvertisingLite_Classical.yaml
+    path: ./ruleset/ads.yaml
+    interval: 86400
+  openai:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/OpenAI/OpenAI.yaml
+    path: ./ruleset/openai.yaml
+    interval: 86400
+  claude:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Claude/Claude.yaml
+    path: ./ruleset/claude.yaml
+    interval: 86400
+  gemini:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Gemini/Gemini.yaml
+    path: ./ruleset/gemini.yaml
+    interval: 86400
+  copilot:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Copilot/Copilot.yaml
+    path: ./ruleset/copilot.yaml
+    interval: 86400
+  bing:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Bing/Bing.yaml
+    path: ./ruleset/bing.yaml
+    interval: 86400
+  apple:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Apple/Apple_Classical.yaml
+    path: ./ruleset/apple.yaml
+    interval: 86400
+  microsoft:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Microsoft/Microsoft.yaml
+    path: ./ruleset/microsoft.yaml
+    interval: 86400
+  amazon:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Amazon/Amazon.yaml
+    path: ./ruleset/amazon.yaml
+    interval: 86400
+  youtube:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/YouTube/YouTube.yaml
+    path: ./ruleset/youtube.yaml
+    interval: 86400
+  netflix:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Netflix/Netflix.yaml
+    path: ./ruleset/netflix.yaml
+    interval: 86400
+  disney:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Disney/Disney.yaml
+    path: ./ruleset/disney.yaml
+    interval: 86400
+  spotify:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Spotify/Spotify.yaml
+    path: ./ruleset/spotify.yaml
+    interval: 86400
+  tiktok:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/TikTok/TikTok.yaml
+    path: ./ruleset/tiktok.yaml
+    interval: 86400
+  twitch:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Twitch/Twitch.yaml
+    path: ./ruleset/twitch.yaml
+    interval: 86400
+  bahamut:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Bahamut/Bahamut.yaml
+    path: ./ruleset/bahamut.yaml
+    interval: 86400
+  primevideo:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/PrimeVideo/PrimeVideo.yaml
+    path: ./ruleset/primevideo.yaml
+    interval: 86400
+  hbo:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/HBO/HBO.yaml
+    path: ./ruleset/hbo.yaml
+    interval: 86400
+  bilibili:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/BiliBili/BiliBili.yaml
+    path: ./ruleset/bilibili.yaml
+    interval: 86400
+  globalmedia:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml
+    path: ./ruleset/globalmedia.yaml
+    interval: 86400
+  chinamedia:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/ChinaMedia/ChinaMedia.yaml
+    path: ./ruleset/chinamedia.yaml
+    interval: 86400
+  telegram:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Telegram/Telegram.yaml
+    path: ./ruleset/telegram.yaml
+    interval: 86400
+  twitter:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Twitter/Twitter.yaml
+    path: ./ruleset/twitter.yaml
+    interval: 86400
+  facebook:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Facebook/Facebook.yaml
+    path: ./ruleset/facebook.yaml
+    interval: 86400
+  instagram:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Instagram/Instagram.yaml
+    path: ./ruleset/instagram.yaml
+    interval: 86400
+  discord:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Discord/Discord.yaml
+    path: ./ruleset/discord.yaml
+    interval: 86400
+  whatsapp:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Whatsapp/Whatsapp.yaml
+    path: ./ruleset/whatsapp.yaml
+    interval: 86400
+  line:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Line/Line.yaml
+    path: ./ruleset/line.yaml
+    interval: 86400
+  reddit:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Reddit/Reddit.yaml
+    path: ./ruleset/reddit.yaml
+    interval: 86400
+  linkedin:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/LinkedIn/LinkedIn.yaml
+    path: ./ruleset/linkedin.yaml
+    interval: 86400
+  google:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Google/Google.yaml
+    path: ./ruleset/google.yaml
+    interval: 86400
+  github:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/GitHub/GitHub.yaml
+    path: ./ruleset/github.yaml
+    interval: 86400
+  steam:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Steam/Steam.yaml
+    path: ./ruleset/steam.yaml
+    interval: 86400
+  epic:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Epic/Epic.yaml
+    path: ./ruleset/epic.yaml
+    interval: 86400
+  playstation:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/PlayStation/PlayStation.yaml
+    path: ./ruleset/playstation.yaml
+    interval: 86400
+  xbox:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Xbox/Xbox.yaml
+    path: ./ruleset/xbox.yaml
+    interval: 86400
+  nintendo:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Nintendo/Nintendo.yaml
+    path: ./ruleset/nintendo.yaml
+    interval: 86400
+  game:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Game/Game.yaml
+    path: ./ruleset/game.yaml
+    interval: 86400
+  proxy:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Proxy/Proxy_Classical.yaml
+    path: ./ruleset/proxy.yaml
+    interval: 86400
+  china:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/China/China_Classical.yaml
+    path: ./ruleset/china.yaml
+    interval: 86400
+  chinaips:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/ChinaIPs/ChinaIPs_Classical_No_Resolve.yaml
+    path: ./ruleset/chinaips.yaml
+    interval: 86400
+  lan:
+    type: http
+    behavior: classical
+    url: https://geo.yuetong.app/bm7/rule/Clash/Lan/Lan.yaml
+    path: ./ruleset/lan.yaml
+    interval: 86400
+
+rules: #!replace
+- DOMAIN-SUFFIX,lynvx.info,DIRECT
+- DOMAIN-SUFFIX,usuxlink.casa,DIRECT
+- DOMAIN-SUFFIX,asn.tn,DIRECT
+- DOMAIN-SUFFIX,nexa.lat,DIRECT
+- DOMAIN-SUFFIX,011214.best,DIRECT
+- AND,((NETWORK,UDP),(DST-PORT,443),(OR,((RULE-SET,bing),(RULE-SET,github)))),REJECT,Lotus Cloud
+- AND,((NETWORK,UDP),(DST-PORT,123)),DIRECT
+- DOMAIN-SUFFIX,yuetong.app,DIRECT
+- RULE-SET,lan,DIRECT
+- RULE-SET,ads,REJECT
+- RULE-SET,openai,AI
+- RULE-SET,claude,AI
+- RULE-SET,gemini,AI
+- RULE-SET,copilot,AI
+- DOMAIN-SUFFIX,perplexity.ai,AI
+- DOMAIN-SUFFIX,poe.com,AI
+- DOMAIN-SUFFIX,sora.com,AI
+- DOMAIN-SUFFIX,grok.com,AI
+- DOMAIN-SUFFIX,x.ai,AI
+- DOMAIN-SUFFIX,meta.ai,AI
+- DOMAIN-SUFFIX,huggingface.co,AI
+- DOMAIN-SUFFIX,replicate.com,AI
+- DOMAIN-SUFFIX,midjourney.com,AI
+- DOMAIN-SUFFIX,stability.ai,AI
+- DOMAIN-SUFFIX,runway.com,AI
+- DOMAIN-SUFFIX,runwayml.com,AI
+- DOMAIN-SUFFIX,mistral.ai,AI
+- DOMAIN-SUFFIX,cohere.com,AI
+- DOMAIN-SUFFIX,together.ai,AI
+- DOMAIN-SUFFIX,groq.com,AI
+- DOMAIN-SUFFIX,fireworks.ai,AI
+- DOMAIN-SUFFIX,chatgpt.com,AI
+- DOMAIN-SUFFIX,cursor.com,AI
+- DOMAIN-SUFFIX,cursor.sh,AI
+- DOMAIN-SUFFIX,codeium.com,AI
+- DOMAIN-SUFFIX,windsurf.com,AI
+- DOMAIN-SUFFIX,bolt.new,AI
+- DOMAIN-SUFFIX,v0.dev,AI
+- DOMAIN-SUFFIX,replit.com,AI
+- DOMAIN-SUFFIX,replit.dev,AI
+- DOMAIN-SUFFIX,vercel.ai,AI
+- DOMAIN-SUFFIX,anthropic.com,AI
+- DOMAIN-SUFFIX,claude.ai,AI
+- DOMAIN-SUFFIX,claude.site,AI
+- DOMAIN-SUFFIX,notebooklm.google,AI
+- DOMAIN-SUFFIX,ai.google.dev,AI
+- DOMAIN-SUFFIX,aistudio.google.com,AI
+- DOMAIN-SUFFIX,suno.ai,AI
+- DOMAIN-SUFFIX,suno.com,AI
+- DOMAIN-SUFFIX,udio.com,AI
+- DOMAIN-SUFFIX,devin.ai,AI
+- DOMAIN-SUFFIX,cognition.ai,AI
+- DOMAIN-SUFFIX,lovable.dev,AI
+- DOMAIN-SUFFIX,labs.google,AI
+- DOMAIN-SUFFIX,lmsys.org,AI
+- DOMAIN-SUFFIX,dify.ai,AI
+- DOMAIN-SUFFIX,coze.com,AI
+- DOMAIN-SUFFIX,character.ai,AI
+- DOMAIN-SUFFIX,jasper.ai,AI
+- DOMAIN-SUFFIX,elevenlabs.io,AI
+- DOMAIN-SUFFIX,heygen.com,AI
+- DOMAIN-SUFFIX,synthesia.io,AI
+- DOMAIN-SUFFIX,openrouter.ai,AI
+- DOMAIN-SUFFIX,copilot.github.com,AI
+- DOMAIN-SUFFIX,api.githubcopilot.com,AI
+- DOMAIN-SUFFIX,genspark.ai,AI
+- DOMAIN-SUFFIX,manus.im,AI
+- DOMAIN-SUFFIX,you.com,AI
+- DOMAIN-SUFFIX,phind.com,AI
+- DOMAIN-SUFFIX,abacus.ai,AI
+- DOMAIN-SUFFIX,sider.ai,AI
+- DOMAIN-SUFFIX,monica.im,AI
+- DOMAIN-SUFFIX,deepl.com,AI
+- DOMAIN-SUFFIX,ideogram.ai,AI
+- DOMAIN-SUFFIX,krea.ai,AI
+- DOMAIN-SUFFIX,recraft.ai,AI
+- DOMAIN-SUFFIX,napkin.ai,AI
+- DOMAIN-SUFFIX,gamma.app,AI
+- DOMAIN-SUFFIX,lumalabs.ai,AI
+- DOMAIN-SUFFIX,pika.art,AI
+- DOMAIN-SUFFIX,klingai.com,AI
+- DOMAIN-SUFFIX,deepseek.com,DIRECT
+- DOMAIN-SUFFIX,doubao.com,DIRECT
+- DOMAIN-SUFFIX,kimi.com,DIRECT
+- DOMAIN-SUFFIX,moonshot.cn,DIRECT
+- DOMAIN-SUFFIX,chatglm.cn,DIRECT
+- DOMAIN-SUFFIX,zhipuai.cn,DIRECT
+- DOMAIN-SUFFIX,bigmodel.cn,DIRECT
+- RULE-SET,bing,Google
+- RULE-SET,apple,DIRECT
+- DOMAIN-SUFFIX,login.microsoftonline.com,Lotus Cloud
+- DOMAIN-SUFFIX,login.microsoft.com,Lotus Cloud
+- DOMAIN-SUFFIX,login.live.com,Lotus Cloud
+- DOMAIN-SUFFIX,microsoftonline.com,Lotus Cloud
+- DOMAIN-SUFFIX,microsoftonline-p.com,Lotus Cloud
+- DOMAIN-SUFFIX,msauth.net,Lotus Cloud
+- DOMAIN-SUFFIX,msftauth.net,Lotus Cloud
+- DOMAIN-SUFFIX,msidentity.com,Lotus Cloud
+- DOMAIN-SUFFIX,account.live.com,Lotus Cloud
+- DOMAIN-SUFFIX,graph.microsoft.com,Lotus Cloud
+- DOMAIN-SUFFIX,onedrive.com,Lotus Cloud
+- DOMAIN-SUFFIX,onedrive.live.com,Lotus Cloud
+- DOMAIN-SUFFIX,1drv.com,Lotus Cloud
+- DOMAIN-SUFFIX,1drv.ms,Lotus Cloud
+- DOMAIN-SUFFIX,livefilestore.com,Lotus Cloud
+- DOMAIN-SUFFIX,storage.live.com,Lotus Cloud
+- DOMAIN-SUFFIX,sharepoint.com,Lotus Cloud
+- DOMAIN-SUFFIX,sharepointonline.com,Lotus Cloud
+- DOMAIN-SUFFIX,svc.ms,Lotus Cloud
+- DOMAIN-SUFFIX,outlook.com,Lotus Cloud
+- DOMAIN-SUFFIX,outlook.office.com,Lotus Cloud
+- DOMAIN-SUFFIX,outlook.office365.com,Lotus Cloud
+- DOMAIN-SUFFIX,outlookmobile.com,Lotus Cloud
+- DOMAIN-SUFFIX,protection.outlook.com,Lotus Cloud
+- DOMAIN-SUFFIX,teams.microsoft.com,Lotus Cloud
+- DOMAIN-SUFFIX,teams.cloud.microsoft,Lotus Cloud
+- DOMAIN-SUFFIX,teams.live.com,Lotus Cloud
+- DOMAIN-SUFFIX,office.com,Lotus Cloud
+- DOMAIN-SUFFIX,office.net,Lotus Cloud
+- DOMAIN-SUFFIX,office365.com,Lotus Cloud
+- DOMAIN-SUFFIX,officeapps.live.com,Lotus Cloud
+- DOMAIN-SUFFIX,microsoft365.com,Lotus Cloud
+- DOMAIN-SUFFIX,azure.com,Lotus Cloud
+- DOMAIN-SUFFIX,azure.net,Lotus Cloud
+- RULE-SET,github,Lotus Cloud
+- RULE-SET,microsoft,DIRECT
+- RULE-SET,youtube,YouTube
+- RULE-SET,netflix,流媒体
+- RULE-SET,disney,流媒体
+- RULE-SET,spotify,流媒体
+- RULE-SET,twitch,流媒体
+- RULE-SET,bahamut,流媒体
+- RULE-SET,primevideo,流媒体
+- RULE-SET,hbo,流媒体
+- DOMAIN-SUFFIX,tv.apple.com,流媒体
+- DOMAIN-SUFFIX,music.apple.com,流媒体
+- DOMAIN-SUFFIX,bilibili.tv,流媒体
+- DOMAIN-SUFFIX,crunchyroll.com,流媒体
+- DOMAIN-SUFFIX,hulu.com,流媒体
+- DOMAIN-SUFFIX,pandora.com,流媒体
+- DOMAIN-SUFFIX,iq.com,流媒体
+- DOMAIN-SUFFIX,wetv.vip,流媒体
+- DOMAIN-SUFFIX,viu.com,流媒体
+- RULE-SET,bilibili,DIRECT
+- RULE-SET,chinamedia,DIRECT
+- DOMAIN-KEYWORD,emby,流媒体
+- DOMAIN-KEYWORD,jellyfin,流媒体
+- RULE-SET,globalmedia,流媒体
+- RULE-SET,tiktok,TikTok
+- RULE-SET,google,Google
+- RULE-SET,telegram,Telegram
+- RULE-SET,twitter,社交媒体
+- RULE-SET,facebook,社交媒体
+- RULE-SET,instagram,社交媒体
+- RULE-SET,discord,社交媒体
+- RULE-SET,whatsapp,社交媒体
+- RULE-SET,line,社交媒体
+- RULE-SET,reddit,社交媒体
+- RULE-SET,linkedin,社交媒体
+- DOMAIN-SUFFIX,threads.net,社交媒体
+- DOMAIN-SUFFIX,bsky.app,社交媒体
+- DOMAIN-SUFFIX,bsky.social,社交媒体
+- DOMAIN-KEYWORD,mastodon,社交媒体
+- DOMAIN-SUFFIX,misskey.io,社交媒体
+- DOMAIN-SUFFIX,pixiv.net,社交媒体
+- DOMAIN-SUFFIX,pximg.net,社交媒体
+- DOMAIN-SUFFIX,snapchat.com,社交媒体
+- DOMAIN-SUFFIX,sc-cdn.net,社交媒体
+- RULE-SET,steam,游戏平台
+- RULE-SET,epic,游戏平台
+- RULE-SET,playstation,游戏平台
+- RULE-SET,xbox,游戏平台
+- RULE-SET,nintendo,游戏平台
+- RULE-SET,game,游戏平台
+- DOMAIN-SUFFIX,zoom.us,Lotus Cloud
+- DOMAIN-SUFFIX,zoom.com,Lotus Cloud
+- DOMAIN-SUFFIX,zoomgov.com,Lotus Cloud
+- DOMAIN-SUFFIX,slack.com,Lotus Cloud
+- DOMAIN-SUFFIX,slack-edge.com,Lotus Cloud
+- DOMAIN-SUFFIX,notion.so,Lotus Cloud
+- DOMAIN-SUFFIX,notion-static.com,Lotus Cloud
+- DOMAIN-SUFFIX,figma.com,Lotus Cloud
+- DOMAIN-SUFFIX,atlassian.com,Lotus Cloud
+- DOMAIN-SUFFIX,atlassian.net,Lotus Cloud
+- DOMAIN-SUFFIX,jira.com,Lotus Cloud
+- DOMAIN-SUFFIX,trello.com,Lotus Cloud
+- DOMAIN-SUFFIX,salesforce.com,Lotus Cloud
+- DOMAIN-SUFFIX,force.com,Lotus Cloud
+- DOMAIN-SUFFIX,render.com,Lotus Cloud
+- DOMAIN-SUFFIX,onrender.com,Lotus Cloud
+- DOMAIN-SUFFIX,railway.app,Lotus Cloud
+- DOMAIN-SUFFIX,fly.dev,Lotus Cloud
+- DOMAIN-SUFFIX,fly.io,Lotus Cloud
+- DOMAIN-SUFFIX,supabase.co,Lotus Cloud
+- DOMAIN-SUFFIX,supabase.com,Lotus Cloud
+- DOMAIN-SUFFIX,linear.app,Lotus Cloud
+- DOMAIN-SUFFIX,coursera.org,Lotus Cloud
+- DOMAIN-SUFFIX,udemy.com,Lotus Cloud
+- DOMAIN-SUFFIX,khanacademy.org,Lotus Cloud
+- DOMAIN-SUFFIX,arxiv.org,Lotus Cloud
+- DOMAIN-SUFFIX,hath.network,兜底分流
+- DOMAIN-SUFFIX,ehgt.org,兜底分流
+- RULE-SET,amazon,兜底分流
+- DOMAIN-SUFFIX,shopify.com,兜底分流
+- DOMAIN-SUFFIX,myshopify.com,兜底分流
+- DOMAIN-SUFFIX,paypal.com,兜底分流
+- DOMAIN-SUFFIX,stripe.com,兜底分流
+- RULE-SET,proxy,兜底分流
+- RULE-SET,china,DIRECT
+- RULE-SET,chinaips,DIRECT
+- GEOIP,CN,DIRECT,no-resolve
+- DOMAIN-SUFFIX,vfsglobal.com,DIRECT
+- DOMAIN-SUFFIX,vfsglobal.ca,DIRECT
+- DOMAIN-SUFFIX,tlscontact.com,DIRECT
+- DOMAIN-SUFFIX,usvisascheduling.com,DIRECT
+- DOMAIN-SUFFIX,ustraveldocs.com,DIRECT
+- DOMAIN-SUFFIX,usvisa-info.com,DIRECT
+- DOMAIN-SUFFIX,blscn.cn,DIRECT
+- DOMAIN-SUFFIX,blsspainvisa.com,DIRECT
+- DOMAIN-SUFFIX,blsinternational.com,DIRECT
+- DOMAIN-SUFFIX,ceac.state.gov,DIRECT
+- DOMAIN-SUFFIX,esta.cbp.dhs.gov,DIRECT
+- DOMAIN-SUFFIX,evus.gov,DIRECT
+- DOMAIN-SUFFIX,portal-portail.apps.cic.gc.ca,DIRECT
+- DOMAIN-SUFFIX,ircc-services.canada.ca,DIRECT
+- DOMAIN-SUFFIX,ircc.canada.ca,DIRECT
+- DOMAIN-SUFFIX,eta.onlineservices-servicesenligne.apps.cic.gc.ca,DIRECT
+- DOMAIN-SUFFIX,visa-immigration.service.gov.uk,DIRECT
+- DOMAIN-SUFFIX,apply-to-visit-or-stay-in-the-uk.homeoffice.gov.uk,DIRECT
+- DOMAIN-SUFFIX,apply-for-an-eta.homeoffice.gov.uk,DIRECT
+- DOMAIN-SUFFIX,visas.inis.gov.ie,DIRECT
+- DOMAIN-SUFFIX,portal.irishimmigration.ie,DIRECT
+- DOMAIN-SUFFIX,france-visas.gouv.fr,DIRECT
+- DOMAIN-SUFFIX,digital.diplo.de,DIRECT
+- DOMAIN-SUFFIX,service2.diplo.de,DIRECT
+- DOMAIN-SUFFIX,videx.diplo.de,DIRECT
+- DOMAIN-SUFFIX,appointment.bmeia.gv.at,DIRECT
+- DOMAIN-SUFFIX,swiss-visa.ch,DIRECT
+- DOMAIN-SUFFIX,e-applicationvisa.esteri.it,DIRECT
+- DOMAIN-SUFFIX,visaonweb.diplomatie.be,DIRECT
+- DOMAIN-SUFFIX,consular.mfaservices.nl,DIRECT
+- DOMAIN-SUFFIX,ind.nl,DIRECT
+- DOMAIN-SUFFIX,prenotami.esteri.it,DIRECT
+- DOMAIN-SUFFIX,pedidodevistos.mne.pt,DIRECT
+- DOMAIN-SUFFIX,aima.gov.pt,DIRECT
+- DOMAIN-SUFFIX,applyvisa.um.dk,DIRECT
+- DOMAIN-SUFFIX,newtodenmark.dk,DIRECT
+- DOMAIN-SUFFIX,udi.no,DIRECT
+- DOMAIN-SUFFIX,migrationsverket.se,DIRECT
+- DOMAIN-SUFFIX,enterfinland.fi,DIRECT
+- DOMAIN-SUFFIX,immi.gov.au,DIRECT
+- DOMAIN-SUFFIX,immi.homeaffairs.gov.au,DIRECT
+- DOMAIN-SUFFIX,immigration.govt.nz,DIRECT
+- DOMAIN-SUFFIX,evisa.mofa.go.jp,DIRECT
+- DOMAIN-SUFFIX,visa.go.kr,DIRECT
+- DOMAIN-SUFFIX,k-eta.go.kr,DIRECT
+- DOMAIN-SUFFIX,ica.gov.sg,DIRECT
+- DOMAIN-SUFFIX,travel-europe.europa.eu,DIRECT
+- DOMAIN-SUFFIX,travel.state.gov,DIRECT
+- MATCH,兜底分流
